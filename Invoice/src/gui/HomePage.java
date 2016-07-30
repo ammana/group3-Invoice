@@ -1,0 +1,341 @@
+package gui;
+
+import dataManagement.SystemData;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class HomePage extends javax.swing.JPanel {
+    JFrame  panelHolder;
+    SystemData systemData;
+    DefaultListModel model;
+    
+    public HomePage(JFrame  panelHolder, SystemData systemData, boolean isFirstLogin) {
+        this.panelHolder = panelHolder;
+        this.systemData = systemData;        
+        initComponents();    
+        try{
+            Logo.setIcon(new ImageIcon(ImageIO.read( new File("data/eagle.JPG")).
+                getScaledInstance(150, 120, Image.SCALE_SMOOTH)));
+        }catch(IOException e){
+            System.out.println("Company Logo not Found!");
+        }
+                
+        JMenuBar menuBar = new JMenuBar();
+        panelHolder.setJMenuBar(menuBar);
+
+        JMenu mnMaintain = new JMenu("Maintain");
+        menuBar.add(mnMaintain);
+        
+        JMenuItem mntmCompany = new JMenuItem("Company");
+        mnMaintain.add(mntmCompany);        
+        mntmCompany.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Company Maintenence");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new CompanyMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        
+        JMenuItem mntmClient = new JMenuItem("Client");
+        mnMaintain.add(mntmClient);
+        mntmClient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Client Maintenence");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ClientMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
+            }
+        });               
+        
+        JMenuItem mntmEmployee = new JMenuItem("Employee");
+        mnMaintain.add(mntmEmployee);
+        mntmEmployee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Employee Maintenence");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new EmployeeMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        
+        JMenuItem mntmProject = new JMenuItem("Project");
+        mnMaintain.add(mntmProject);
+        mntmProject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Project Maintenence");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ProjectMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
+            }
+        });
+                
+        
+        JMenu mnReport = new JMenu("Report");
+        menuBar.add(mnReport);
+        JMenuItem mntmGenerateSchedule = new JMenuItem("Available Employees");
+        mnReport.add(mntmGenerateSchedule);
+        mntmGenerateSchedule.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                panelHolder.setTitle("Available Employees");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new AvailableEmployees(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        JMenuItem mntmNewMenuItem = new JMenuItem("Hours Clocked");
+        mnReport.add(mntmNewMenuItem);
+        mntmNewMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                panelHolder.setTitle("Hours Clocked");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new HoursClocked(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        JMenuItem mntmProjectReport= new JMenuItem("Project Report");
+        mnReport.add(mntmProjectReport);
+        mntmProjectReport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                panelHolder.setTitle("Project Report");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new ProjectReport(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+
+        JMenu mnManage = new JMenu("Manage");
+        menuBar.add(mnManage);
+        JMenuItem mntmNewMenuItem_1 = new JMenuItem("Developers");
+        mnManage.add(mntmNewMenuItem_1);
+        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                
+//                panelHolder.setTitle("Manage Developers");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new ManageDevelopers(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        
+        JMenuItem mntmNewMenuItem_2 = new JMenuItem("Approve Hours");
+        mnManage.add(mntmNewMenuItem_2);
+        mntmNewMenuItem_2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                
+//                panelHolder.setTitle("Approve Hours");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new ApproveHours(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        JMenuItem mntmManageProject = new JMenuItem("Project");
+        mnManage.add(mntmManageProject);
+        mntmManageProject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                
+//                panelHolder.setTitle("Manage Project");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new ManageProject(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        
+        JMenu mnInvoice = new JMenu("Invoice");
+        menuBar.add(mnInvoice);
+        JMenuItem mntmGenerateInvoice = new JMenuItem("Generate / Mail");
+        mnInvoice.add(mntmGenerateInvoice);
+        mntmGenerateInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                panelHolder.setTitle("Import Student");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new GenerateInvoice(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        
+        JMenuItem mntmNewMenuItem_3 = new JMenuItem("Save as PDF");
+        mnInvoice.add(mntmNewMenuItem_3);
+        mntmNewMenuItem_3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                panelHolder.setTitle("Save as PDF");
+//                panelHolder.getContentPane().removeAll();
+//		panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
+//		panelHolder.getContentPane().revalidate();        
+            }
+        });
+                
+        JMenu mnCurUser = new JMenu(systemData.getCurrentUser().getName());
+        menuBar.add(mnCurUser);
+        
+        if(true){//user is not accountant
+            JMenuItem mntmClockHours = new JMenuItem("Clock Hours");
+            mnCurUser.add(mntmClockHours);
+            mntmClockHours.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+//                    panelHolder.setTitle("Clock Hours");
+//                    panelHolder.getContentPane().removeAll();
+//                    panelHolder.getContentPane().add(new ClockHours(panelHolder, systemData));
+//                    panelHolder.getContentPane().revalidate();      
+                }
+            }); 
+        }        
+        
+        JMenuItem mntmChangePassword = new JMenuItem("Change Password");
+        mnCurUser.add(mntmChangePassword);
+        mntmChangePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Change Password");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ChangePassword(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();      
+            }
+        });   
+        
+        JMenuItem mntmLogout = new JMenuItem("Logout");
+        mnCurUser.add(mntmLogout);
+        mntmLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Login Page");
+                panelHolder.setJMenuBar(null);
+                panelHolder.getContentPane().removeAll();                                
+		panelHolder.getContentPane().add(new LogInPanel(panelHolder, systemData.getUserCredentials()));
+		panelHolder.getContentPane().revalidate();      
+            }
+        });     
+      
+                
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setLayout(new java.awt.GridBagLayout());
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Eagle Consulting Company");
+
+        jLabel3.setText("Address:");
+
+        jLabel4.setText("Edmond, OK  73013");
+
+        jLabel5.setText("2501 E. Memorial Rd");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Welcome to Invoice Generation System");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 30, 28, 0);
+        add(jPanel1, gridBagConstraints);
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    // End of variables declaration//GEN-END:variables
+}
