@@ -1,6 +1,7 @@
 package gui;
 
 import basicClasses.Client;
+
 import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
 import javax.persistence.EntityManager;
