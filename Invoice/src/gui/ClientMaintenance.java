@@ -13,14 +13,14 @@ import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
-public class ClientMaintenence extends javax.swing.JPanel {
+public class ClientMaintenance extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
       
     DefaultTableModel tableModel;
     List<Client> clientList;
     
-    public ClientMaintenence(JFrame  panelHolder, SystemData systemData) {
+    public ClientMaintenance(JFrame  panelHolder, SystemData systemData) {
         this.panelHolder = panelHolder;
         this.systemData = systemData;  
         initComponents();
@@ -75,7 +75,7 @@ public class ClientMaintenence extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Client Maintainance Page");
+        jLabel1.setText("Client Maintenance Page");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

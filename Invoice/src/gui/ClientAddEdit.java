@@ -251,12 +251,41 @@ public class ClientAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+    	if(name.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Client name can not be left blank!");
+            return;            
+        }
+        if(addressLine1.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Address Line 1 can not be left blank!");
+            return;            
+        }
+        if(city.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "City can not be left blank!");
+            return;            
+        }
+        if(state.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "State can not be left blank!");
+            return;            
+        }
+        if(zip.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Zip can not be left blank!");
+            return;            
+        }        
         try{
             Integer.parseInt(zip.getText());
         }catch(Exception e){            
             JOptionPane.showMessageDialog(null, "Please enter proper Zip code!");
             return;
-        }  
+        }          
+        if(email.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Email can not be left blank!");
+            return;            
+        }        
+        if(contact.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Contact can not be left blank!");
+            return;            
+        }
+         
         
         if(isEdit){      
             ConnectionManager cm = new ConnectionManager();
@@ -305,7 +334,7 @@ public class ClientAddEdit extends javax.swing.JPanel {
         
         panelHolder.setTitle("Client Maintenence");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new ClientMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new ClientMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
         
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -313,7 +342,7 @@ public class ClientAddEdit extends javax.swing.JPanel {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         panelHolder.setTitle("Client Maintenence");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new ClientMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new ClientMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
                
     }//GEN-LAST:event_cancelButtonActionPerformed

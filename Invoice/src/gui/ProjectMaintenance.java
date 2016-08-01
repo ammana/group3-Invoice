@@ -16,13 +16,13 @@ import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
-public class ProjectMaintenence extends javax.swing.JPanel {
+public class ProjectMaintenance extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
     
     List<Project> projectList;
         
-    public ProjectMaintenence(JFrame  panelHolder, SystemData systemData) {
+    public ProjectMaintenance(JFrame  panelHolder, SystemData systemData) {
         this.panelHolder = panelHolder;
         this.systemData = systemData;  
         initComponents();
