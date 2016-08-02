@@ -3,9 +3,9 @@
   <persistence-unit name="InvoiceGenerationPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>basicClasses.Client</class>
-    <class>basicClasses.Employee</class>
     <class>basicClasses.Company</class>
-    <class>basicClasses.Project</class>
+    <class>basicClasses.Employee</class>
+    <class>basicClasses.Project</class>    
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/project2db?useSSL=false"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

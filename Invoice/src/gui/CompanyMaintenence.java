@@ -206,8 +206,21 @@ public class CompanyMaintenence extends javax.swing.JPanel {
         ConnectionManager cm = new ConnectionManager();
         EntityManager em = cm.getEntityManager();
         Query query = em.createQuery("Select c  from Company c");
-        List<Company> list = query.getResultList();
+        List<Company> list = query.getResultList();            
         Company comp = list.get(0);
+        
+        
+        if(comp.getName().equals(name.getText()) &&
+                comp.getAddressLine1().equals(address1.getText())&&
+                comp.getAddressLine2().equals(address2.getText()) &&      
+                comp.getCity().equals(city.getText()) &&      
+                comp.getState().equals(state.getText()) &&     
+                comp.getZip()==Integer.parseInt(zip.getText())){
+                
+                JOptionPane.showMessageDialog(null, "No change in Company Information to update!"); 
+                return;
+        }
+        
         comp.setName(name.getText());
         comp.setAddressLine1(address1.getText());
         comp.setAddressLine2(address2.getText());        
