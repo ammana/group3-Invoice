@@ -57,6 +57,10 @@ public class HomePage extends javax.swing.JPanel {
         JMenu mnMaintain = new JMenu("Maintain");
         menuBar.add(mnMaintain);
         
+        if(systemData.getCurrentUser().getEmployeeType().equals("Developer") ||
+            systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnMaintain.setEnabled(false);
+        }
         JMenuItem mntmCompany = new JMenuItem("Company");
         mnMaintain.add(mntmCompany);        
         mntmCompany.addActionListener(new ActionListener() {
@@ -144,15 +148,19 @@ public class HomePage extends javax.swing.JPanel {
 
         JMenu mnManage = new JMenu("Manage");
         menuBar.add(mnManage);
+        if(!systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnManage.setEnabled(false);
+        }
+        
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("Developers");
         mnManage.add(mntmNewMenuItem_1);
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Manage Developers");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ManageDevelopers(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Manage Developers");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ManageDevelopers(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         
@@ -161,10 +169,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmNewMenuItem_2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Approve Hours");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ApproveHours(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Approve Hours");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ApproveHours(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         JMenuItem mntmManageProject = new JMenuItem("Project");
@@ -172,10 +180,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmManageProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Manage Project");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ManageProject(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Manage Project");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ManageProject(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         
@@ -192,6 +200,10 @@ public class HomePage extends javax.swing.JPanel {
 //		panelHolder.getContentPane().revalidate();        
             }
         });
+        if(systemData.getCurrentUser().getEmployeeType().equals("Developer") ||
+            systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnInvoice.setEnabled(false);
+        }
         
         JMenuItem mntmNewMenuItem_3 = new JMenuItem("Save as PDF");
         mnInvoice.add(mntmNewMenuItem_3);
@@ -205,19 +217,19 @@ public class HomePage extends javax.swing.JPanel {
             }
         });
                 
-        JMenu mnCurUser = new JMenu(systemData.getCurrentUser().getName());
+        JMenu mnCurUser = new JMenu(systemData.getCurrentUser().getEmployee().getName());
         menuBar.add(mnCurUser);
         
-        if(true){//user is not accountant
+        if(!systemData.getCurrentUser().getEmployeeType().equals("Accountant")){
             JMenuItem mntmClockHours = new JMenuItem("Clock Hours");
             mnCurUser.add(mntmClockHours);
             mntmClockHours.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    panelHolder.setTitle("Clock Hours");
-//                    panelHolder.getContentPane().removeAll();
-//                    panelHolder.getContentPane().add(new ClockHours(panelHolder, systemData));
-//                    panelHolder.getContentPane().revalidate();      
+                    panelHolder.setTitle("Clock Hours");
+                    panelHolder.getContentPane().removeAll();
+                    panelHolder.getContentPane().add(new ClockHours(panelHolder, systemData));
+                    panelHolder.getContentPane().revalidate();      
                 }
             }); 
         }        
@@ -242,7 +254,7 @@ public class HomePage extends javax.swing.JPanel {
                 panelHolder.setTitle("Login Page");
                 panelHolder.setJMenuBar(null);
                 panelHolder.getContentPane().removeAll();                                
-		panelHolder.getContentPane().add(new LogInPanel(panelHolder, systemData.getUserCredentials()));
+		panelHolder.getContentPane().add(new LogInPanel(panelHolder));
 		panelHolder.getContentPane().revalidate();      
             }
         });     
@@ -256,7 +268,7 @@ public class HomePage extends javax.swing.JPanel {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -342,10 +354,10 @@ public class HomePage extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 30, 28, 0);
         add(jPanel1, gridBagConstraints);
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
     private javax.swing.JLabel addressLine;
     private javax.swing.JLabel jLabel1;
@@ -353,5 +365,5 @@ public class HomePage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel name;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }

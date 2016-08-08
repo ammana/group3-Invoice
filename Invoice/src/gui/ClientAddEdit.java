@@ -1,7 +1,6 @@
 package gui;
 
 import basicClasses.Client;
-
 import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
 import javax.persistence.EntityManager;
@@ -252,7 +251,7 @@ public class ClientAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-    	if(name.getText().equals("")){
+        if(name.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Client name can not be left blank!");
             return;            
         }
@@ -286,8 +285,8 @@ public class ClientAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Contact can not be left blank!");
             return;            
         }
-         
         
+                
         if(isEdit){      
             ConnectionManager cm = new ConnectionManager();
             EntityManager em = cm.getEntityManager();
@@ -333,7 +332,7 @@ public class ClientAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Client added suceessfully.");
         }        
         
-        panelHolder.setTitle("Client Maintenence");
+        panelHolder.setTitle("Client Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new ClientMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
@@ -341,7 +340,7 @@ public class ClientAddEdit extends javax.swing.JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        panelHolder.setTitle("Client Maintenence");
+        panelHolder.setTitle("Client Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new ClientMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();

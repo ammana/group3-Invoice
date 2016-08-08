@@ -4,6 +4,7 @@ import dataManagement.LoadClient;
 import dataManagement.LoadCompany;
 import dataManagement.LoadEmployee;
 import dataManagement.LoadProject;
+import dataManagement.LoadProjectPerson;
 
 
 public class LoadInitialData {
@@ -11,7 +12,8 @@ public class LoadInitialData {
         new LoadCompany("data/company_data.csv");
         new LoadClient("data/client_data.csv");
         new LoadEmployee("data/people_data.csv");
-        new LoadProject("data/project_data.csv");    
+        new LoadProject("data/project_data.csv");  
+        new LoadProjectPerson("data/project_person.csv");   
     }
     
 }

@@ -167,7 +167,7 @@ public class EmployeeAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        panelHolder.setTitle("Employee Maintenence");
+        panelHolder.setTitle("Employee Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new EmployeeMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
@@ -175,7 +175,7 @@ public class EmployeeAddEdit extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-    	if(name.getText().equals("")){
+        if(name.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Employee name can not be left blank!");
             return;            
         }
@@ -235,7 +235,7 @@ public class EmployeeAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Employee added suceessfully.");
         }
 
-        panelHolder.setTitle("Employee Maintenence");
+        panelHolder.setTitle("Employee Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new EmployeeMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();

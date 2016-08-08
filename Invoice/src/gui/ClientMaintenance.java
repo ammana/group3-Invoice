@@ -75,7 +75,7 @@ public class ClientMaintenance extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Client Maintenance Page");
+        jLabel1.setText("Client Maintainance Page");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

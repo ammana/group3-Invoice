@@ -5,7 +5,6 @@ import basicClasses.Employee;
 import basicClasses.Project;
 import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
-
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -238,7 +237,7 @@ public class ProjectAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        panelHolder.setTitle("Project Maintenence");
+        panelHolder.setTitle("Project Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new ProjectMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
@@ -246,7 +245,8 @@ public class ProjectAddEdit extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-    	if(name.getText().equals("")){
+              
+        if(name.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Project name can not be blank!");
             return;            
         }
@@ -278,6 +278,7 @@ public class ProjectAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Project Budget can not be blank!");
             return;            
         }
+        
         try{
             Integer.parseInt(budget.getText());
         }catch(Exception e){
@@ -328,7 +329,7 @@ public class ProjectAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Project added suceessfully.");
         }
 
-        panelHolder.setTitle("Project Maintenence");
+        panelHolder.setTitle("Project Maintenance");
         panelHolder.getContentPane().removeAll();
         panelHolder.getContentPane().add(new ProjectMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();

@@ -22,6 +22,7 @@ public class Project implements Serializable {
     private String status;  
     @ManyToOne
     private Employee projectManager;
+    private String managerName;
     private String clientContact;
     private int budget;
 
@@ -29,7 +30,8 @@ public class Project implements Serializable {
     }
 
     public Project(Client client, Integer id, String name, String startDate,
-            String endDate, String status, Employee projectManager, String clientContact, int budget) {
+            String endDate, String status, Employee projectManager, String  managerName,
+            String clientContact, int budget) {
         this.id = id;
         this.name = name;
         this.client = client;
@@ -37,6 +39,7 @@ public class Project implements Serializable {
         this.endDate = endDate;
         this.status = status;
         this.projectManager = projectManager;
+        this.managerName = managerName;
         this.clientContact = clientContact;
         this.budget = budget;
     }
@@ -108,6 +111,15 @@ public class Project implements Serializable {
     public void setBudget(int budget) {
         this.budget = budget;
     }   
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+    
     
 
     @Override
@@ -132,7 +144,7 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        return "basicClasses.Project[ id=" + id + " ]";
+        return id +"";
     }
     
 }

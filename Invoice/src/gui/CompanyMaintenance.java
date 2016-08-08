@@ -68,7 +68,7 @@ public class CompanyMaintenance extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Company Maintenance Page");
+        jLabel1.setText("Company Maintenence Page");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -94,7 +94,7 @@ public class CompanyMaintenance extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText("Company Name");
+        jLabel2.setText("Comnapy Name");
 
         jLabel3.setText("Address Line 1");
 
@@ -203,25 +203,22 @@ public class CompanyMaintenance extends javax.swing.JPanel {
             return;
         }
         
+        
         ConnectionManager cm = new ConnectionManager();
         EntityManager em = cm.getEntityManager();
         Query query = em.createQuery("Select c  from Company c");
         List<Company> list = query.getResultList();
         Company comp = list.get(0);
-        
- 
-        
         if(comp.getName().equals(name.getText()) &&
-                comp.getAddressLine1().equals(address1.getText())&&
-                comp.getAddressLine2().equals(address2.getText()) &&      
-                comp.getCity().equals(city.getText()) &&      
-                comp.getState().equals(state.getText()) &&     
-                comp.getZip()==Integer.parseInt(zip.getText())){
-                
-                JOptionPane.showMessageDialog(null, "No change in Company Information to update!"); 
-                return;
+            comp.getAddressLine1().equals(address1.getText())&&
+            comp.getAddressLine2().equals(address2.getText()) &&      
+            comp.getCity().equals(city.getText()) &&      
+            comp.getState().equals(state.getText()) &&     
+            comp.getZip()==Integer.parseInt(zip.getText())){
+            
+            JOptionPane.showMessageDialog(null, "Company Information updated successfully!"); 
+            return;
         }
-        
         comp.setName(name.getText());
         comp.setAddressLine1(address1.getText());
         comp.setAddressLine2(address2.getText());        
