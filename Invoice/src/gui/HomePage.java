@@ -1,12 +1,17 @@
 package gui;
 
+import basicClasses.Company;
+import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -23,6 +28,22 @@ public class HomePage extends javax.swing.JPanel {
         this.panelHolder = panelHolder;
         this.systemData = systemData;        
         initComponents();    
+        ConnectionManager cm = new ConnectionManager();
+        EntityManager em = cm.getEntityManager();
+        Query query = em.createQuery("Select c  from Company c");
+        List<Company> list = query.getResultList();
+        Company comp = list.get(0);        
+        
+        name.setText(comp.getName());
+        addressLine.setText("<html>"+ comp.getAddressLine1()
+                +(comp.getAddressLine2()==null || comp.getAddressLine2().trim().equals("") 
+                        ? "":", "+ comp.getAddressLine2()    )          
+                +"<br>"+comp.getCity()+", "+comp.getState() + " " + comp.getZip()
+                + "</html>");
+        
+        cm.close();
+        
+        
         try{
             Logo.setIcon(new ImageIcon(ImageIO.read( new File("data/eagle.JPG")).
                 getScaledInstance(150, 120, Image.SCALE_SMOOTH)));
@@ -36,14 +57,18 @@ public class HomePage extends javax.swing.JPanel {
         JMenu mnMaintain = new JMenu("Maintain");
         menuBar.add(mnMaintain);
         
+        if(systemData.getCurrentUser().getEmployeeType().equals("Developer") ||
+            systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnMaintain.setEnabled(false);
+        }
         JMenuItem mntmCompany = new JMenuItem("Company");
         mnMaintain.add(mntmCompany);        
         mntmCompany.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Company Maintenence");
+                panelHolder.setTitle("Company Maintenance");
                 panelHolder.getContentPane().removeAll();
-		panelHolder.getContentPane().add(new CompanyMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().add(new CompanyMaintenance(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
@@ -53,9 +78,9 @@ public class HomePage extends javax.swing.JPanel {
         mntmClient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Client Maintenence");
+                panelHolder.setTitle("Client Maintenance");
                 panelHolder.getContentPane().removeAll();
-		panelHolder.getContentPane().add(new ClientMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().add(new ClientMaintenance(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });               
@@ -65,9 +90,9 @@ public class HomePage extends javax.swing.JPanel {
         mntmEmployee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Employee Maintenence");
+                panelHolder.setTitle("Employee Maintenance");
                 panelHolder.getContentPane().removeAll();
-		panelHolder.getContentPane().add(new EmployeeMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().add(new EmployeeMaintenance(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
@@ -77,9 +102,9 @@ public class HomePage extends javax.swing.JPanel {
         mntmProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Project Maintenence");
+                panelHolder.setTitle("Project Maintenance");
                 panelHolder.getContentPane().removeAll();
-		panelHolder.getContentPane().add(new ProjectMaintenence(panelHolder, systemData));
+		panelHolder.getContentPane().add(new ProjectMaintenance(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
@@ -123,15 +148,19 @@ public class HomePage extends javax.swing.JPanel {
 
         JMenu mnManage = new JMenu("Manage");
         menuBar.add(mnManage);
+        if(!systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnManage.setEnabled(false);
+        }
+        
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("Developers");
         mnManage.add(mntmNewMenuItem_1);
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Manage Developers");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ManageDevelopers(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Manage Developers");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ManageDevelopers(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         
@@ -140,10 +169,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmNewMenuItem_2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Approve Hours");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ApproveHours(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Approve Hours");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ApproveHours(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         JMenuItem mntmManageProject = new JMenuItem("Project");
@@ -151,10 +180,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmManageProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-//                panelHolder.setTitle("Manage Project");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ManageProject(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Manage Project");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ManageProject(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         
@@ -171,6 +200,10 @@ public class HomePage extends javax.swing.JPanel {
 //		panelHolder.getContentPane().revalidate();        
             }
         });
+        if(systemData.getCurrentUser().getEmployeeType().equals("Developer") ||
+            systemData.getCurrentUser().getEmployeeType().equals("Project Manager")   ){
+            mnInvoice.setEnabled(false);
+        }
         
         JMenuItem mntmNewMenuItem_3 = new JMenuItem("Save as PDF");
         mnInvoice.add(mntmNewMenuItem_3);
@@ -184,19 +217,19 @@ public class HomePage extends javax.swing.JPanel {
             }
         });
                 
-        JMenu mnCurUser = new JMenu(systemData.getCurrentUser().getName());
+        JMenu mnCurUser = new JMenu(systemData.getCurrentUser().getEmployee().getName());
         menuBar.add(mnCurUser);
         
-        if(true){//user is not accountant
+        if(!systemData.getCurrentUser().getEmployeeType().equals("Accountant")){
             JMenuItem mntmClockHours = new JMenuItem("Clock Hours");
             mnCurUser.add(mntmClockHours);
             mntmClockHours.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    panelHolder.setTitle("Clock Hours");
-//                    panelHolder.getContentPane().removeAll();
-//                    panelHolder.getContentPane().add(new ClockHours(panelHolder, systemData));
-//                    panelHolder.getContentPane().revalidate();      
+                    panelHolder.setTitle("Clock Hours");
+                    panelHolder.getContentPane().removeAll();
+                    panelHolder.getContentPane().add(new ClockHours(panelHolder, systemData));
+                    panelHolder.getContentPane().revalidate();      
                 }
             }); 
         }        
@@ -221,7 +254,7 @@ public class HomePage extends javax.swing.JPanel {
                 panelHolder.setTitle("Login Page");
                 panelHolder.setJMenuBar(null);
                 panelHolder.getContentPane().removeAll();                                
-		panelHolder.getContentPane().add(new LogInPanel(panelHolder, systemData.getUserCredentials()));
+		panelHolder.getContentPane().add(new LogInPanel(panelHolder));
 		panelHolder.getContentPane().revalidate();      
             }
         });     
@@ -242,41 +275,39 @@ public class HomePage extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         Logo = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        addressLine = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Eagle Consulting Company");
+        name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        name.setText("Eagle Consulting");
 
         jLabel3.setText("Address:");
 
-        jLabel4.setText("Edmond, OK  73013");
-
-        jLabel5.setText("2501 E. Memorial Rd");
+        addressLine.setText("2501 E. Memorial Rd");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(addressLine, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                        .addGap(39, 39, 39)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,14 +315,12 @@ public class HomePage extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(addressLine, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -330,12 +359,11 @@ public class HomePage extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
+    private javax.swing.JLabel addressLine;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables
 }
