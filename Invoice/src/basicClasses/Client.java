@@ -20,6 +20,7 @@ public class Client implements Serializable {
     private String city;
     private String State;
     private int zip;
+    
     private String email;
     private String contact;
     private String invoiceFrequency;   
