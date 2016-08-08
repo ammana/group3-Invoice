@@ -5,6 +5,7 @@ import basicClasses.Employee;
 import basicClasses.Project;
 import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -236,14 +237,48 @@ public class ProjectAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        panelHolder.setTitle("Project Maintenence");
+        panelHolder.setTitle("Project Maintenance");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new ProjectMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new ProjectMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
 
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+              
+        if(name.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Project name can not be blank!");
+            return;            
+        }
+        if(startDate.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Project Start Date can not be blank!");
+            return;            
+        }
+        try{
+            new Date(startDate.getText());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Start Date entered is invalid!");
+            return;
+        }
+        if(endDate.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Project End Date can not be blank!");
+            return;            
+        }
+        try{
+            new Date(endDate.getText());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "End Date entered is invalid!");
+            return;
+        }
+        if(clientContact.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Client Contact can not be blank!");
+            return;            
+        }
+        if(budget.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Project Budget can not be blank!");
+            return;            
+        }
+        
         try{
             Integer.parseInt(budget.getText());
         }catch(Exception e){
@@ -294,9 +329,9 @@ public class ProjectAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Project added suceessfully.");
         }
 
-        panelHolder.setTitle("Project Maintenence");
+        panelHolder.setTitle("Project Maintenance");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new ProjectMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new ProjectMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
 
     }//GEN-LAST:event_saveButtonActionPerformed

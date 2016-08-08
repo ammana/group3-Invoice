@@ -1,10 +1,9 @@
 package gui;
 
-import basicClasses.UserProfile;
+import basicClasses.LoginCredentials;
+import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Scanner;
+import javax.persistence.EntityManager;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -12,12 +11,9 @@ import javax.swing.JOptionPane;
 public class LogInPanel extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
-    HashMap<String, String> userCredentials;
-
     
-    public LogInPanel(JFrame  panelHolder, HashMap<String, String> userCredentials) {
+    public LogInPanel(JFrame  panelHolder) {
         this.panelHolder = panelHolder;
-        this.userCredentials = userCredentials;
         initComponents();
     }
 
@@ -38,7 +34,7 @@ public class LogInPanel extends javax.swing.JPanel {
         userName = new javax.swing.JTextField();
         password = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
-        loginButton1 = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
@@ -59,10 +55,10 @@ public class LogInPanel extends javax.swing.JPanel {
             }
         });
 
-        loginButton1.setText("Clear");
-        loginButton1.addActionListener(new java.awt.event.ActionListener() {
+        clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginButton1ActionPerformed(evt);
+                clearButtonActionPerformed(evt);
             }
         });
 
@@ -86,7 +82,7 @@ public class LogInPanel extends javax.swing.JPanel {
                                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(loginButton1)
+                        .addComponent(clearButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loginButton)))
                 .addContainerGap())
@@ -107,7 +103,7 @@ public class LogInPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loginButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -135,31 +131,22 @@ public class LogInPanel extends javax.swing.JPanel {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String userName = this.userName.getText().toLowerCase();
         String password = new String(this.password.getPassword());
-        //System.out.println("cur dir = "+System.getProperty("user.dir"));
-        if(userCredentials == null){
-            try {
-                Scanner sc = new Scanner(new File("data/LoginCredentials.csv"));
-                userCredentials = new HashMap<String, String>();
-                while (sc.hasNextLine()) {
-                    Scanner line = new Scanner(sc.nextLine());
-                    line.useDelimiter(",\\s");
-                    userCredentials.put(line.next().toLowerCase(), line.next());
-                    line.close();
-                }
-                sc.close();     
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Either \"data/LoginCredentials.csv\" file "
-                        + "does not exist or file format is wrong!");
-            }
+        if(userName.equals("")){
+            JOptionPane.showMessageDialog(null, "Please enter username." );
+            return;
         }
-        if (true){
-        //if (userCredentials.get(userName) != null && userCredentials.get(userName).equals(password)) {
-            //System.out.println(userName  + "=" + password);
+        if(password.equals("")){
+            JOptionPane.showMessageDialog(null, "Password can not be blank." );
+            return;
+        }
+        ConnectionManager cm = new ConnectionManager();
+        EntityManager em = cm.getEntityManager();        
+        LoginCredentials userCred = em.find(LoginCredentials.class, userName);
+        cm.close();  
+        if(userCred!= null && password.equals(userCred.getPassword())){
+        
             this.systemData = new SystemData();
-            //systemData.load();
-            systemData.setCurrentUser(new UserProfile(userName, password));                
-            systemData.setUserCredentials(userCredentials);   
+            systemData.setCurrentUser(userCred); 
 
             panelHolder.setTitle("Home Page");
             panelHolder.getContentPane().removeAll();
@@ -171,19 +158,20 @@ public class LogInPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
-    private void loginButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_loginButton1ActionPerformed
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        this.userName.setText("");
+        this.password.setText(""); 
+    }//GEN-LAST:event_clearButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clearButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loginButton;
-    private javax.swing.JButton loginButton1;
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField userName;
     // End of variables declaration//GEN-END:variables

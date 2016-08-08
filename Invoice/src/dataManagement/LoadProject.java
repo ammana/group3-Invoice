@@ -29,10 +29,11 @@ public class LoadProject {
                 Project project;
                 Scanner line = new Scanner(sc.nextLine());
                 line.useDelimiter(",");  
-                
+                Employee emp;
                 project = new Project(em.find(Client.class, line.nextInt()), line.nextInt(), 
-                        line.next(), line.next(), line.next(), line.next(), 
-                        em.find(Employee.class, line.next()), line.next(), line.nextInt());
+                    line.next(), line.next(), line.next(), line.next(), 
+                    emp = em.find(Employee.class, line.next()), emp.getName(),
+                    line.next(), line.nextInt());
                 line.close();
                 //Load a record
                 em.persist(project);

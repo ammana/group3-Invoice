@@ -1,29 +1,16 @@
 package dataManagement;
 
-import java.util.HashMap;
-import basicClasses.UserProfile;
+import basicClasses.LoginCredentials;
 
-public class SystemData {
-  
+public class SystemData {  
         
-    private UserProfile currentUser;
-    private HashMap<String, String> userCredentials;   	
+    private LoginCredentials currentUser;
 
-    public HashMap<String, String> getUserCredentials() {
-        return userCredentials;
-    }
-
-    public void setUserCredentials(HashMap<String, String> userCredentials) {
-        this.userCredentials = userCredentials;
-    }  
-    
-    
-    public UserProfile getCurrentUser() {
+    public LoginCredentials getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(UserProfile currentUser) {
+    public void setCurrentUser(LoginCredentials currentUser) {
         this.currentUser = currentUser;
-    }   
-  
+    }      
 }

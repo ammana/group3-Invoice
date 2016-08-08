@@ -167,15 +167,22 @@ public class EmployeeAddEdit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        panelHolder.setTitle("Employee Maintenence");
+        panelHolder.setTitle("Employee Maintenance");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new EmployeeMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new EmployeeMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
 
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try{
+        if(name.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Employee name can not be left blank!");
+            return;            
+        }
+        if(billRate.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Bill rate can not be left blank!");
+            return;            
+        }try{
             Integer.parseInt(billRate.getText());
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Please enter integer value of Bill Rate!");
@@ -228,9 +235,9 @@ public class EmployeeAddEdit extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Employee added suceessfully.");
         }
 
-        panelHolder.setTitle("Employee Maintenence");
+        panelHolder.setTitle("Employee Maintenance");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new EmployeeMaintenence(panelHolder, systemData));
+        panelHolder.getContentPane().add(new EmployeeMaintenance(panelHolder, systemData));
         panelHolder.getContentPane().revalidate();
 
     }//GEN-LAST:event_saveButtonActionPerformed
