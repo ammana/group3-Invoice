@@ -2,10 +2,13 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="InvoiceGenerationPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>basicClasses.Client</class>
-    <class>basicClasses.Company</class>
+ 	<class>basicClasses.Client</class>
     <class>basicClasses.Employee</class>
-    <class>basicClasses.Project</class>    
+    <class>basicClasses.Company</class>
+    <class>basicClasses.Project</class>
+    <class>basicClasses.LoginCredentials</class>
+    <class>basicClasses.ProjectPerson</class>
+    <class>basicClasses.ClockedHours</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/project2db?useSSL=false"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

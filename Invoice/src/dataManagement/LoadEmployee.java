@@ -1,6 +1,7 @@
 package dataManagement;
 
 import basicClasses.Employee;
+import basicClasses.LoginCredentials;
 import java.io.File;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
@@ -13,7 +14,14 @@ public class LoadEmployee {
         EntityManagerFactory emf = javax.persistence.Persistence.createEntityManagerFactory("InvoiceGenerationPU");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();       
-         
+        
+        Employee emp;
+        LoginCredentials loginCred;
+        emp = new Employee("Accountant", "Accountant", 0, "Accountant");
+        loginCred = new LoginCredentials("Account", "12345", emp.getEmpRole(), emp);
+        em.persist(emp);
+        em.persist(loginCred);
+        
         try {
             Scanner sc = new Scanner(new File(filePath));
             
@@ -24,13 +32,17 @@ public class LoadEmployee {
             
             //Read a single record
             while (sc.hasNextLine()) {
-                Employee emp;
                 Scanner line = new Scanner(sc.nextLine());
                 line.useDelimiter(",");                
                 emp = new Employee(line.next(), line.next(), line.nextInt(), line.next());
                 line.close();
+                String[] empName = emp.getName().split(" ");
+                loginCred = new LoginCredentials(
+                        empName[0].toLowerCase()+"."+empName[1].toLowerCase(),
+                        "12345", emp.getEmpRole(), emp);
                 //Load a record
                 em.persist(emp);
+                em.persist(loginCred);
             }
             sc.close();   
                         
