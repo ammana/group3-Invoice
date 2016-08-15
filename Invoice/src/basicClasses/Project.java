@@ -1,6 +1,7 @@
 package basicClasses;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Project implements Serializable {
     private String managerName;
     private String clientContact;
     private int budget;
+    private Date nextInvoiceDate;
 
     public Project() {
     }
@@ -58,6 +60,14 @@ public class Project implements Serializable {
 
     public Client getClient() {
         return client;
+    }
+
+    public Date getNextInvoiceDate() {
+        return nextInvoiceDate;
+    }
+
+    public void setNextInvoiceDate(Date nextInvoiceDate) {
+        this.nextInvoiceDate = nextInvoiceDate;
     }
 
     public void setClient(Client client) {

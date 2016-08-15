@@ -18,12 +18,14 @@ public class Employee implements Serializable {
     private String title;
     private int billRate;
     private String EmpRole;
+    private boolean isActive;
 
     public Employee(String name, String title, int billRate, String role) {
         this.name = name;
         this.title = title;
         this.billRate = billRate;
         this.EmpRole = role;
+        this.isActive = true;
     }
 
     public Employee() {
@@ -60,6 +62,16 @@ public class Employee implements Serializable {
     public void setEmpRole(String EmpRole) {
         this.EmpRole = EmpRole;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+    
 
     @Override
     public int hashCode() {

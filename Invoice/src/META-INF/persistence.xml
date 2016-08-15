@@ -8,7 +8,9 @@
     <class>basicClasses.Project</class>
     <class>basicClasses.LoginCredentials</class>
     <class>basicClasses.ProjectPerson</class>
-    <class>basicClasses.ClockedHours</class>
+    <class>basicClasses.ClockedHours</class>    
+    <class>basicClasses.Invoice</class>
+    <class>basicClasses.InvoiceLineItem</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/project2db?useSSL=false"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

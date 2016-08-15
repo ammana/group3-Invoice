@@ -143,6 +143,11 @@ public class LogInPanel extends javax.swing.JPanel {
         EntityManager em = cm.getEntityManager();        
         LoginCredentials userCred = em.find(LoginCredentials.class, userName);
         cm.close();  
+        if(!userCred.getEmployee().isActive()){
+            JOptionPane.showMessageDialog(null, "Your account has been deactivated!"
+                    + "\nPlease request accountant to activate the same.");
+            return;
+        }
         if(userCred!= null && password.equals(userCred.getPassword())){
         
             this.systemData = new SystemData();

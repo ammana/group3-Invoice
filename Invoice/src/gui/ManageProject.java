@@ -234,7 +234,7 @@ public class ManageProject extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-    	if(projectModel.getIndexOf(projectModel.getSelectedItem())==0){
+        if(projectModel.getIndexOf(projectModel.getSelectedItem())==0){
             JOptionPane.showMessageDialog(null, "Please select a Project first!");
             return;
         }        

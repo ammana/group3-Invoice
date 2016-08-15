@@ -7,6 +7,7 @@ import dataManagement.SystemData;
 import dataManagement.ConnectionManager;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -24,13 +25,17 @@ public class ClockHours extends javax.swing.JPanel {
     DefaultTableModel tableModel;
     List<Project> projectList;
     List<Date> dates;
+    Calendar selectedWeekStartDate;
     
     public ClockHours(JFrame  panelHolder, SystemData systemData) {
         this.panelHolder = panelHolder;
         this.systemData = systemData;  
         initComponents();   
         welcome.setText("Welcome "+ systemData.getCurrentUser().getEmployee().getName());
-        Calendar calendar = Calendar.getInstance();
+        selectedWeekStartDate = Calendar.getInstance();
+        selectedWeekStartDate.set(Calendar.DAY_OF_WEEK, 1);
+        
+        Calendar calendar = (Calendar)selectedWeekStartDate.clone();
 	calendar.set(Calendar.DAY_OF_WEEK, 1);
         Date weekStartDate = new Date(calendar.getTimeInMillis());
         calendar.set(Calendar.DAY_OF_WEEK, 7);
@@ -65,9 +70,9 @@ public class ClockHours extends javax.swing.JPanel {
         int i =0;
         boolean[] isApproved = new boolean[projectList.size()];
         for(Project project: projectList){
-            query = em.createQuery("Select wh from ClockedHours wh where wh.projectID= '"+project.getId()
-                    +"' and wh.empName='"+  systemData.getCurrentUser().getEmployee().getName()
-                    +"' and wh.date between '"+weekStartDate+"' and '"+ weekEndDate+"' order by wh.date");
+            query = em.createQuery("Select ch from ClockedHours ch where ch.projectID= '"+project.getId()
+                    +"' and ch.empName='"+  systemData.getCurrentUser().getEmployee().getName()
+                    +"' and ch.date between '"+weekStartDate+"' and '"+ weekEndDate+"' order by ch.date");
             List<ClockedHours> hoursList = query.getResultList();
             isApproved[i]= (hoursList==null || hoursList.isEmpty() ? false: hoursList.get(0).isIsApproved());
             rowData[i][0] = project.getName()+" ("+ project.getId()+")";
@@ -108,6 +113,7 @@ public class ClockHours extends javax.swing.JPanel {
                 if(!tableModel.isCellEditable(row, 0)){
                     JOptionPane.showMessageDialog(null, "Hours in this is row already Approved!"
                             + "\nHence, can not be edited!");
+                    return;
                 }
             }
         }); 
@@ -133,6 +139,8 @@ public class ClockHours extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -193,6 +201,20 @@ public class ClockHours extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Previous Week");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Next Week");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -211,7 +233,13 @@ public class ClockHours extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(welcome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -222,8 +250,11 @@ public class ClockHours extends javax.swing.JPanel {
                 .addGap(6, 6, 6)
                 .addComponent(welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(22, 22, 22)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -269,17 +300,17 @@ public class ClockHours extends javax.swing.JPanel {
                     return;
                 }
 
-                ClockedHours wh = em.find(ClockedHours.class, projectList.get(i).getId()
+                ClockedHours ch = em.find(ClockedHours.class, projectList.get(i).getId()
                         +systemData.getCurrentUser().getEmployee().getName()+dates.get(j-1));
-                if(wh==null){
-                    wh = new ClockedHours(projectList.get(i).getId()+systemData.getCurrentUser().getEmployee().getName()
+                if(ch==null){
+                    ch = new ClockedHours(projectList.get(i).getId()+systemData.getCurrentUser().getEmployee().getName()
                         +dates.get(j-1), systemData.getCurrentUser().getEmployee(), 
                         systemData.getCurrentUser().getEmployee().getName(), projectList.get(i),
                         projectList.get(i).getId(), hours, dates.get(j-1), false, false, null);
-                    em.persist(wh); 
+                    em.persist(ch); 
                 }
-                if(!wh.isIsApproved()){
-                    wh.setHoursWorked(hours);                    
+                if(!ch.isIsApproved()){
+                    ch.setHoursWorked(hours);                    
                 }
             }    
         }
@@ -294,9 +325,109 @@ public class ClockHours extends javax.swing.JPanel {
         panelHolder.getContentPane().revalidate();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        selectedWeekStartDate.add(Calendar.DAY_OF_WEEK, 7);
+        System.out.println("hiiii"+ new Date(selectedWeekStartDate.getTimeInMillis()));
+        refreshDisplay();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        selectedWeekStartDate.add(Calendar.DAY_OF_WEEK, -7);
+        System.out.println("hiiii"+ new Date(selectedWeekStartDate.getTimeInMillis()));
+        refreshDisplay();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void refreshDisplay(){
+        Calendar calendar = (Calendar)selectedWeekStartDate.clone();
+	calendar.set(Calendar.DAY_OF_WEEK, 1);
+        Date weekStartDate = new Date(calendar.getTimeInMillis());
+        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        Date weekEndDate = new Date(calendar.getTimeInMillis());
+        jLabel10.setText("Clock Hours for: "+weekStartDate+" to "+weekEndDate);
+        
+        Object[] columnNames =  {"", 
+                                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        dates = new ArrayList<>();
+        for (int i = 7; i >0; ) {
+            Date date = new Date(calendar.getTimeInMillis());
+            //columnNames[i] = date.toString();
+            dates.add(0, date);
+            //System.out.println(date);//"<html>"+ date+"<br>"+ "Monday"+"</html>";;
+            --i;
+            calendar.set(Calendar.DAY_OF_WEEK, i);           
+        }
+        
+        ConnectionManager cm = new ConnectionManager();
+        EntityManager em = cm.getEntityManager();
+        Query query = em.createQuery("Select pp.projectNumber  from ProjectPerson pp "
+                + "where pp.isActivated='Yes' and "
+                + "pp.personName='"+systemData.getCurrentUser().getEmployee().getName() +"'");
+        projectList = query.getResultList();
+        for (int i = projectList.size()-1; i >=0; --i) {
+            if(projectList.get(i).getStatus().equals("Closed")){
+                projectList.remove(i);
+            }
+        }
+        
+        Object[][] rowData = new Object[projectList.size()][8];
+        int i =0;
+        boolean[] isApproved = new boolean[projectList.size()];
+        for(Project project: projectList){
+            query = em.createQuery("Select ch from ClockedHours ch where ch.projectID= '"+project.getId()
+                    +"' and ch.empName='"+  systemData.getCurrentUser().getEmployee().getName()
+                    +"' and ch.date between '"+weekStartDate+"' and '"+ weekEndDate+"' order by ch.date");
+            List<ClockedHours> hoursList = query.getResultList();
+            isApproved[i]= (hoursList==null || hoursList.isEmpty() ? false: hoursList.get(0).isIsApproved());
+            rowData[i][0] = project.getName()+" ("+ project.getId()+")";
+            if(!hoursList.isEmpty()){
+                rowData[i][1] = hoursList.get(0).getHoursWorked();
+                rowData[i][2] = hoursList.get(1).getHoursWorked();
+                rowData[i][3] = hoursList.get(2).getHoursWorked();
+                rowData[i][4] = hoursList.get(3).getHoursWorked();
+                rowData[i][5] = hoursList.get(4).getHoursWorked();
+                rowData[i][6] = hoursList.get(5).getHoursWorked();
+                rowData[i][7] = hoursList.get(6).getHoursWorked();
+            } else{
+                rowData[i][1] = "0";
+                rowData[i][2] = "0";
+                rowData[i][3] = "0";
+                rowData[i][4] = "0";
+                rowData[i][5] = "0";
+                rowData[i][6] = "0";
+                rowData[i][7] = "0";
+            }   
+            ++i;
+        }
+        
+        tableModel = new DefaultTableModel(rowData, columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return !isApproved[row];
+            }
+         };
+        
+        jTable1.setModel(tableModel);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+        jTable1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable1.getSelectedRow();
+                if(!tableModel.isCellEditable(row, 0)){
+                    JOptionPane.showMessageDialog(null, "Hours in this is row already Approved!"
+                            + "\nHence, can not be edited!");
+                    return;
+                }
+            }
+        }); 
+        cm.close();
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JPanel jPanel1;

@@ -117,10 +117,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmGenerateSchedule.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                panelHolder.setTitle("Available Employees");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new AvailableEmployees(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Available Employees");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new EmployeeReport(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         JMenuItem mntmNewMenuItem = new JMenuItem("Hours Clocked");
@@ -128,10 +128,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmNewMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                panelHolder.setTitle("Hours Clocked");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new HoursClocked(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Hours Clocked");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ClockedHoursReport(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         JMenuItem mntmProjectReport= new JMenuItem("Project Report");
@@ -139,10 +139,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmProjectReport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                panelHolder.setTitle("Project Report");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new ProjectReport(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Project Report");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new ProjectReport(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
 
@@ -194,10 +194,10 @@ public class HomePage extends javax.swing.JPanel {
         mntmGenerateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                panelHolder.setTitle("Import Student");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new GenerateInvoice(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("Generate / Mail Invoice");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new GenerateInvoice(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
         if(systemData.getCurrentUser().getEmployeeType().equals("Developer") ||
@@ -205,15 +205,15 @@ public class HomePage extends javax.swing.JPanel {
             mnInvoice.setEnabled(false);
         }
         
-        JMenuItem mntmNewMenuItem_3 = new JMenuItem("Save as PDF");
+        JMenuItem mntmNewMenuItem_3 = new JMenuItem("View Invoice");
         mnInvoice.add(mntmNewMenuItem_3);
         mntmNewMenuItem_3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                panelHolder.setTitle("Save as PDF");
-//                panelHolder.getContentPane().removeAll();
-//		panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
-//		panelHolder.getContentPane().revalidate();        
+                panelHolder.setTitle("View/ Save as PDF");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
             }
         });
                 
