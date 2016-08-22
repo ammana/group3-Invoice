@@ -26,6 +26,7 @@ public class Project implements Serializable {
     private String managerName;
     private String clientContact;
     private int budget;
+    private Date firstInvoiceDate;
     private Date nextInvoiceDate;
 
     public Project() {
@@ -62,6 +63,14 @@ public class Project implements Serializable {
         return client;
     }
 
+    public Date getFirstInvoiceDate() {
+        return firstInvoiceDate;
+    }
+
+    public void setFirstInvoiceDate(Date firstInvoiceDate) {
+        this.firstInvoiceDate = firstInvoiceDate;
+    }
+        
     public Date getNextInvoiceDate() {
         return nextInvoiceDate;
     }

@@ -288,12 +288,9 @@ public class ProjectAddEdit extends javax.swing.JPanel {
 
         if(isEdit){
             ConnectionManager cm = new ConnectionManager();
-            EntityManager em = cm.getEntityManager();
-            
+            EntityManager em = cm.getEntityManager();            
             Project project = em.find(Project.class, selectedProject.getId());
-            em.remove(project);
             
-            project = new Project();
             project.setName(name.getText());
             project.setClient((Client)clientComboBox.getSelectedItem());
             project.setStartDate(startDate.getText());

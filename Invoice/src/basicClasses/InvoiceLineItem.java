@@ -1,10 +1,12 @@
 package basicClasses;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class InvoiceLineItem implements Serializable {
@@ -14,20 +16,37 @@ public class InvoiceLineItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Integer invoiceId;
+    private Date startDate;
+    private Date endDate;
     private String description;
     private int billRate;
     private long hours;
-    private long total;
+    @ManyToOne
+    private Project project;
+    private Integer projectID;
+    private double total;
 
     public InvoiceLineItem() {
     }
 
-    public InvoiceLineItem(Integer invoiceId, String description, int billRate, long hours, long total) {
+    public InvoiceLineItem(Integer invoiceId, Date startDate, Date endDate, String description, int billRate, long hours, Project project, Integer projectID, double total) {
         this.invoiceId = invoiceId;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
         this.billRate = billRate;
         this.hours = hours;
+        this.project = project;
+        this.projectID = projectID;
         this.total = total;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getInvoiceId() {
@@ -37,7 +56,23 @@ public class InvoiceLineItem implements Serializable {
     public void setInvoiceId(Integer invoiceId) {
         this.invoiceId = invoiceId;
     }
-    
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -62,21 +97,31 @@ public class InvoiceLineItem implements Serializable {
         this.hours = hours;
     }
 
-    public long getTotal() {
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Integer getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(Integer projectID) {
+        this.projectID = projectID;
+    }
+
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public void setTotal(double total) {
         this.total = total;
     }
-        
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+   
 
     @Override
     public int hashCode() {

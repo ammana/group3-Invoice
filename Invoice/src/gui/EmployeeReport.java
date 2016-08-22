@@ -13,7 +13,7 @@ import dataManagement.ConnectionManager;
 
 import javax.swing.table.DefaultTableModel;
 
-public class  EmployeeReport extends javax.swing.JPanel {
+public class EmployeeReport extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
        
@@ -34,7 +34,7 @@ public class  EmployeeReport extends javax.swing.JPanel {
         for(Employee employee: employeelist){
             rowData[i][0] = (Object) employee.getName();
             rowData[i][1] = (Object) employee.getTitle();
-            rowData[i][2] = (Object) employee.getBillRate();
+            rowData[i][2] = "$"+ employee.getBillRate();
             rowData[i][3] = (Object) employee.getEmpRole();            
             
             query = em.createQuery("Select pp from ProjectPerson pp where pp.personName = '"

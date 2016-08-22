@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class ClockHours extends javax.swing.JPanel {
@@ -33,17 +34,17 @@ public class ClockHours extends javax.swing.JPanel {
         initComponents();   
         welcome.setText("Welcome "+ systemData.getCurrentUser().getEmployee().getName());
         selectedWeekStartDate = Calendar.getInstance();
-        selectedWeekStartDate.set(Calendar.DAY_OF_WEEK, 1);
+        selectedWeekStartDate.set(Calendar.DAY_OF_WEEK, 2);
         
         Calendar calendar = (Calendar)selectedWeekStartDate.clone();
-	calendar.set(Calendar.DAY_OF_WEEK, 1);
+	calendar.set(Calendar.DAY_OF_WEEK, 2);
         Date weekStartDate = new Date(calendar.getTimeInMillis());
-        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        calendar.add(Calendar.DAY_OF_WEEK, 6);
         Date weekEndDate = new Date(calendar.getTimeInMillis());
         jLabel10.setText("Clock Hours for: "+weekStartDate+" to "+weekEndDate);
         
         Object[] columnNames =  {"", 
-                                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+                                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         dates = new ArrayList<>();
         for (int i = 7; i >0; ) {
             Date date = new Date(calendar.getTimeInMillis());
@@ -51,7 +52,7 @@ public class ClockHours extends javax.swing.JPanel {
             dates.add(0, date);
             //System.out.println(date);//"<html>"+ date+"<br>"+ "Monday"+"</html>";;
             --i;
-            calendar.set(Calendar.DAY_OF_WEEK, i);           
+            calendar.add(Calendar.DAY_OF_WEEK, -1);           
         }
         
         ConnectionManager cm = new ConnectionManager();
@@ -103,7 +104,8 @@ public class ClockHours extends javax.swing.JPanel {
             }
          };
         
-        jTable1.setModel(tableModel);
+        jTable1 = new JTable(tableModel);
+        jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
         jTable1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -339,14 +341,13 @@ public class ClockHours extends javax.swing.JPanel {
 
     private void refreshDisplay(){
         Calendar calendar = (Calendar)selectedWeekStartDate.clone();
-	calendar.set(Calendar.DAY_OF_WEEK, 1);
+	calendar.set(Calendar.DAY_OF_WEEK, 2);
         Date weekStartDate = new Date(calendar.getTimeInMillis());
-        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        calendar.add(Calendar.DAY_OF_WEEK, 6);
         Date weekEndDate = new Date(calendar.getTimeInMillis());
         jLabel10.setText("Clock Hours for: "+weekStartDate+" to "+weekEndDate);
         
-        Object[] columnNames =  {"", 
-                                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        Object[] columnNames =  {"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         dates = new ArrayList<>();
         for (int i = 7; i >0; ) {
             Date date = new Date(calendar.getTimeInMillis());
@@ -354,7 +355,7 @@ public class ClockHours extends javax.swing.JPanel {
             dates.add(0, date);
             //System.out.println(date);//"<html>"+ date+"<br>"+ "Monday"+"</html>";;
             --i;
-            calendar.set(Calendar.DAY_OF_WEEK, i);           
+            calendar.add(Calendar.DAY_OF_WEEK, -1);           
         }
         
         ConnectionManager cm = new ConnectionManager();
@@ -406,7 +407,8 @@ public class ClockHours extends javax.swing.JPanel {
             }
          };
         
-        jTable1.setModel(tableModel);
+        jTable1 = new JTable(tableModel);
+        jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
         jTable1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -25,20 +25,19 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Scanner;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import java.io.FileOutputStream;
+import java.util.List;
+import javax.swing.JFileChooser;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.*;
 
-public class SaveInvoice extends javax.swing.JPanel {
+
+public class InvoiceReport extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
         
@@ -51,8 +50,8 @@ public class SaveInvoice extends javax.swing.JPanel {
     Date toDate;
     List<Invoice> invoiceList;
         
-    public SaveInvoice(JFrame  panelHolder, SystemData systemData) {
-       this.panelHolder = panelHolder;
+    public InvoiceReport(JFrame  panelHolder, SystemData systemData) {
+        this.panelHolder = panelHolder;
         this.systemData = systemData;  
         initComponents();
                         
@@ -67,7 +66,7 @@ public class SaveInvoice extends javax.swing.JPanel {
             jButton1.setEnabled(false);
             viewButton.setEnabled(false);
             saveButton.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "No Invoice for the seleted week to show.");            
+            JOptionPane.showMessageDialog(null, "No Invoices there to show.");            
             return;           
         }
         for (Date date : dateList) {            
@@ -85,7 +84,7 @@ public class SaveInvoice extends javax.swing.JPanel {
         fromDate = dateList.get(fromComboBox.getSelectedIndex());
         toDate = dateList.get(toComboBox.getSelectedIndex());                  
         cm.close();               
-        refreshTable();          
+        refreshTable();        
     }
     
     @SuppressWarnings("unchecked")
@@ -96,49 +95,31 @@ public class SaveInvoice extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        saveButton = new javax.swing.JButton();
         viewButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         fromComboBox = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
         toComboBox = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jScrollPane1.setViewportView(jTable1);
 
-        viewButton.setText("View Invoice");
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("List of Invoices in the selected Time period");
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText(" Invoice From");
-
-        fromComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText("To");
-
-        toComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jButton1.setText("Show");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         saveButton.setText("Save Invoice");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
+            }
+        });
+
+        viewButton.setText("View Invoice");
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
             }
         });
 
@@ -152,64 +133,84 @@ public class SaveInvoice extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(viewButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(saveButton)
-                        .addGap(17, 17, 17))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(11, 11, 11))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fromComboBox, 0, 87, Short.MAX_VALUE)
-                    .addComponent(toComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(55, 55, 55)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(fromComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(toComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(viewButton)
-                    .addComponent(saveButton))
+                    .addComponent(saveButton)
+                    .addComponent(viewButton))
                 .addGap(6, 6, 6))
         );
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText(" Invoice From");
+
+        fromComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+
+        toComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel3.setText("To");
+
+        jButton1.setText("Show");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("List of Invoices for the seleted Time period");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fromComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(toComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(33, 33, 33))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(fromComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(toComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Invoice Report");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -217,14 +218,19 @@ public class SaveInvoice extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(28, 28, 28))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -232,8 +238,9 @@ public class SaveInvoice extends javax.swing.JPanel {
         ConnectionManager cm = new ConnectionManager();
         EntityManager em = cm.getEntityManager();
         
-        Query query = em.createQuery("Select inv from Invoice inv"
-        +" where inv.invoiceDate between '"+ fromDate+"' and '"+toDate+"'");
+        Query query = em.createQuery("Select inv from Invoice inv "
+                +" where inv.invoiceDate between '"+ fromDate+"' and '"+toDate+"'"
+                + " ORDER BY INV.clientNumber, inv.invoiceDate");
         invoiceList = query.getResultList();
         System.out.println("invoiceList"+invoiceList);
         if(invoiceList.isEmpty()){        
@@ -244,7 +251,7 @@ public class SaveInvoice extends javax.swing.JPanel {
             return;              
         }
         
-        Object[] columnNames = {"Project", "Client", "Invoice Number", "Invoice Date", "Invoice Amount"};
+        Object[] columnNames = {"Client", "Project", "Invoice Number", "Invoice Date", "Invoice Amount"};
         Object[][] rowData = new Object[invoiceList.size()][5]; 
         int i =0; 
         for (Invoice invoice : invoiceList) {
@@ -257,11 +264,11 @@ public class SaveInvoice extends javax.swing.JPanel {
                 projectNames = projectNames+"<br>"+project.getName()+" ("+project.getId()+")";
             }
             projectNames = "<html>"+projectNames.substring(4)+"</html>";
-            System.out.println("projectNames"+projectNames);
-            rowData[i][0] =  projectNames;
-            rowData[i][1] =  invoice.getClient().getName();
+//            System.out.println("projectNames"+projectNames);
+            rowData[i][0] =  invoice.getClient().getName();
+            rowData[i][1] =  projectNames;
             rowData[i][2] =  invoice.getId();
-            rowData[i][3] =  invoice.getInvoiceDate();
+            rowData[i][3] =  new SimpleDateFormat("MM-dd-yyyy").format(invoice.getInvoiceDate());
             rowData[i][4] =  "$"+invoice.getTotalAmountDue();
             ++i;                    
         }          
@@ -275,11 +282,11 @@ public class SaveInvoice extends javax.swing.JPanel {
         jTable1 = new JTable(tableModel);        
         jScrollPane1.setViewportView(jTable1);
         jTable1.setRowHeight(25);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(130);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(100);
         jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);  
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(60);  
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(80);  
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);  
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(120);  
+        jTable1.getColumnModel().getColumn(4).setPreferredWidth(80);  
         for (int row = 0; row < jTable1.getRowCount(); row++){
             int rowHeight = jTable1.getRowHeight();
 
@@ -287,13 +294,12 @@ public class SaveInvoice extends javax.swing.JPanel {
                 Component comp = jTable1.prepareRenderer(jTable1.getCellRenderer(row, column), row, column);
                 rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
             }
-
             jTable1.setRowHeight(row, rowHeight);
         }
         
         cm.close();
     }
-   
+    
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         if(jTable1.getSelectedRow()==-1){
             JOptionPane.showMessageDialog(null, "Please select one Invoice.");
@@ -302,25 +308,15 @@ public class SaveInvoice extends javax.swing.JPanel {
         Invoice selectedInvoice = invoiceList.get(jTable1.getSelectedRow());
         panelHolder.setTitle("View Invoice");
         panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new ViewInvoice(panelHolder, systemData, selectedInvoice, false ));
+        panelHolder.getContentPane().add(new ViewInvoice(panelHolder, systemData, selectedInvoice, true ));
         panelHolder.getContentPane().revalidate();
     }//GEN-LAST:event_viewButtonActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        fromDate = dateList.get(fromComboBox.getSelectedIndex());
-        toDate = dateList.get(toComboBox.getSelectedIndex());        
-        System.out.println(fromDate +" :"+toDate);
-        if(fromDate.after(toDate)){
-            JOptionPane.showMessageDialog(null, "From Date should be before To Date");
-        }
-        refreshTable();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if(jTable1.getSelectedRow()==-1){
             JOptionPane.showMessageDialog(null, "Please select the Invoice to save.");
             return;            
-        }          
+        }        
         Invoice invoice = invoiceList.get(jTable1.getSelectedRow());
         
         JFileChooser fileChooser = new JFileChooser();
@@ -335,7 +331,6 @@ public class SaveInvoice extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Report was not saved.");
             return;
         }
-        
         
         try{
             XWPFDocument doc = new XWPFDocument(OPCPackage.open("data/template.docx"));
@@ -442,7 +437,7 @@ public class SaveInvoice extends javax.swing.JPanel {
             }          
             cm.close();
             
-            doc.write(new FileOutputStream(fileToSave));//"data/output.docx"));
+            doc.write(new FileOutputStream(fileToSave));
             
             
         }catch(Exception e){
@@ -450,6 +445,16 @@ public class SaveInvoice extends javax.swing.JPanel {
         }
         JOptionPane.showMessageDialog(null, "Selected Invoice Saved Successfully.");
     }//GEN-LAST:event_saveButtonActionPerformed
+       
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        fromDate = dateList.get(fromComboBox.getSelectedIndex());
+        toDate = dateList.get(toComboBox.getSelectedIndex());        
+        System.out.println(fromDate +" :"+toDate);
+        if(fromDate.after(toDate)){
+            JOptionPane.showMessageDialog(null, "From Date should be before To Date");
+        }
+        refreshTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -458,6 +463,7 @@ public class SaveInvoice extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -2,6 +2,7 @@ package gui;
 
 import basicClasses.Invoice;
 import basicClasses.InvoiceLineItem;
+import basicClasses.Project;
 import dataManagement.ConnectionManager;
 import dataManagement.SystemData;
 import java.text.SimpleDateFormat;
@@ -15,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
 public class ViewInvoice extends javax.swing.JPanel {
     JFrame  panelHolder;
     SystemData systemData;
+    boolean fromInvoice;
     Invoice invoice;
     
-    public ViewInvoice(JFrame  panelHolder, SystemData systemData, Invoice invoice) {
+    public ViewInvoice(JFrame  panelHolder, SystemData systemData, Invoice invoice, boolean  fromInvoice) {
         this.panelHolder = panelHolder;
         this.systemData = systemData; 
         this.invoice = invoice;
+        this.fromInvoice = fromInvoice;
         initComponents();
         to.setText("<html>"+invoice.getClient().getName()
                 + "<br>"+invoice.getClient().getAddressLine1()
@@ -30,7 +33,17 @@ public class ViewInvoice extends javax.swing.JPanel {
                 + " "+invoice.getClient().getZip()
                 + "</html>");
         clientID.setText(invoice.getClient().getNumber()+"");
-        projectName.setText(invoice.getProject().getName());
+        ConnectionManager cm = new ConnectionManager();
+        EntityManager em = cm.getEntityManager();
+        Query query = em.createQuery("Select itp.project from InvoiceToProject itp"
+            +" where itp.invoiceID ='"+ invoice.getId() +"'");
+        List<Project> projectList = query.getResultList();
+        String projectNames = "";
+        for (Project project : projectList) {
+            projectNames = projectNames+"<br>"+project.getName()+" ("+project.getId()+")";
+        }
+        projectNames = "<html>"+projectNames.substring(4)+"</html>";
+        projectName.setText(projectNames);      
         
         invoiceNumber.setText("Invoice Number:  "+invoice.getId());
         invoiceDate.setText("Invoice Date: "+ new SimpleDateFormat("MM-dd-yyyy").format(invoice.getInvoiceDate()));
@@ -46,23 +59,22 @@ public class ViewInvoice extends javax.swing.JPanel {
                 + "</html>");
         
         
-        ConnectionManager cm = new ConnectionManager();
-        EntityManager em = cm.getEntityManager();
-        Object[] columnNames = {"Date", "Description", "Rate", "Hours", "Amount"};
-        Query query = em.createQuery("Select line from InvoiceLineItem line"
+        Object[] columnNames = {"Project","Date", "Description", "Rate", "Hours", "Amount"};
+        query = em.createQuery("Select line from InvoiceLineItem line"
         +" where line.invoiceId ='"+ invoice.getId()+"'");
         List<InvoiceLineItem> lineItems = query.getResultList();
         System.out.println(""+lineItems);
         
-        Object[][] rowData = new Object[lineItems.size()][5]; 
+        Object[][] rowData = new Object[lineItems.size()][6]; 
         int i =0; 
         for (InvoiceLineItem lineItem : lineItems) {
-            rowData[i][0] =  new SimpleDateFormat("MM-dd-yyyy").format(invoice.getInvoiceStartDate())+"-"
-                    +new SimpleDateFormat("MM-dd-yyyy").format(invoice.getInvoiceEndDate());
-            rowData[i][1] =  lineItem.getDescription();
-            rowData[i][2] =  lineItem.getBillRate();
-            rowData[i][3] =  lineItem.getHours();
-            rowData[i][4] =  lineItem.getTotal();
+            rowData[i][0] = lineItem.getProject().getName();
+            rowData[i][1] =  new SimpleDateFormat("MM-dd-yyyy").format(lineItem.getStartDate())+" To "
+                    +new SimpleDateFormat("MM-dd-yyyy").format(lineItem.getEndDate());
+            rowData[i][2] =  lineItem.getDescription();
+            rowData[i][3] =  "$"+lineItem.getBillRate();
+            rowData[i][4] =  lineItem.getHours();
+            rowData[i][5] =  "$"+lineItem.getTotal();
             ++i;                    
         }          
         DefaultTableModel tableModel = new DefaultTableModel(rowData, columnNames){
@@ -87,7 +99,6 @@ public class ViewInvoice extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -112,18 +123,8 @@ public class ViewInvoice extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         back = new javax.swing.JButton();
 
-        setLayout(new java.awt.GridBagLayout());
-
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Eagle Consulting Invoice");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 325;
-        gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 10, 0, 10);
-        add(jLabel1, gridBagConstraints);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -152,11 +153,8 @@ public class ViewInvoice extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(to, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(clientID, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(projectName))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(clientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(projectName, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -202,7 +200,7 @@ public class ViewInvoice extends javax.swing.JPanel {
                         .addComponent(payingTerm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(invoiceFreq, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(totalAmountDue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,19 +256,23 @@ public class ViewInvoice extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6)
-                    .addComponent(back, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(remitPaymentTo, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalAmountDue1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(remitPaymentTo, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(totalAmountDue1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(back)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE))
+                        .addGap(18, 18, 18))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,8 +284,8 @@ public class ViewInvoice extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(remitPaymentTo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalAmountDue1)
@@ -293,19 +295,40 @@ public class ViewInvoice extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 10, 11, 10);
-        add(jPanel3, gridBagConstraints);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        panelHolder.setTitle("View/Save Invoice");
-        panelHolder.getContentPane().removeAll();
-        panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
-        panelHolder.getContentPane().revalidate();
+        if(fromInvoice){
+            panelHolder.setTitle("Invoice Report");
+            panelHolder.getContentPane().removeAll();
+            panelHolder.getContentPane().add(new InvoiceReport(panelHolder, systemData));
+            panelHolder.getContentPane().revalidate();
+        }
+        else{
+            panelHolder.setTitle("View/Save Invoice");
+            panelHolder.getContentPane().removeAll();
+            panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
+            panelHolder.getContentPane().revalidate();
+        }
     }//GEN-LAST:event_backActionPerformed
 
 

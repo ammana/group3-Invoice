@@ -117,20 +117,20 @@ public class HomePage extends javax.swing.JPanel {
         mntmGenerateSchedule.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Available Employees");
+                panelHolder.setTitle("Available Employees Report");
                 panelHolder.getContentPane().removeAll();
 		panelHolder.getContentPane().add(new EmployeeReport(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
-        JMenuItem mntmNewMenuItem = new JMenuItem("Hours Clocked");
+        JMenuItem mntmNewMenuItem = new JMenuItem("Payroll Report");
         mnReport.add(mntmNewMenuItem);
         mntmNewMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("Hours Clocked");
+                panelHolder.setTitle("Payroll Report");
                 panelHolder.getContentPane().removeAll();
-		panelHolder.getContentPane().add(new ClockedHoursReport(panelHolder, systemData));
+		panelHolder.getContentPane().add(new PayrollReport(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
@@ -142,6 +142,17 @@ public class HomePage extends javax.swing.JPanel {
                 panelHolder.setTitle("Project Report");
                 panelHolder.getContentPane().removeAll();
 		panelHolder.getContentPane().add(new ProjectReport(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();        
+            }
+        });
+        JMenuItem mntmInvoiceReport= new JMenuItem("Invoice Report");
+        mnReport.add(mntmInvoiceReport);
+        mntmInvoiceReport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Invoice Report");
+                panelHolder.getContentPane().removeAll();
+		panelHolder.getContentPane().add(new InvoiceReport(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
             }
         });
@@ -205,12 +216,12 @@ public class HomePage extends javax.swing.JPanel {
             mnInvoice.setEnabled(false);
         }
         
-        JMenuItem mntmNewMenuItem_3 = new JMenuItem("View Invoice");
+        JMenuItem mntmNewMenuItem_3 = new JMenuItem("Save Invoice");
         mnInvoice.add(mntmNewMenuItem_3);
         mntmNewMenuItem_3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelHolder.setTitle("View/ Save as PDF");
+                panelHolder.setTitle("View/ Save Invoice");
                 panelHolder.getContentPane().removeAll();
 		panelHolder.getContentPane().add(new SaveInvoice(panelHolder, systemData));
 		panelHolder.getContentPane().revalidate();        
@@ -257,7 +268,19 @@ public class HomePage extends javax.swing.JPanel {
 		panelHolder.getContentPane().add(new LogInPanel(panelHolder));
 		panelHolder.getContentPane().revalidate();      
             }
-        });     
+        }); 
+        
+        JMenuItem mntmHelp = new JMenuItem("Help");
+        mnCurUser.add(mntmHelp);
+        mntmHelp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelHolder.setTitle("Help Page");
+                panelHolder.getContentPane().removeAll();                                
+		panelHolder.getContentPane().add(new Help(panelHolder, systemData));
+		panelHolder.getContentPane().revalidate();      
+            }
+        });
       
                 
     }
